@@ -1,4 +1,4 @@
-# Command Line Interface for an ETrade accounts in python
+# Command Line Interface for ETrade accounts in python
 
 BY USING THIS SOFTWARE YOU ARE ACCEPTING THE FACT THAT IT WILL HAVE ACCESS TO ALL
 YOUR E*TRADE ACCOUNT AND IT CAN AUTOMATICALLY PLACE ORDERS THAT YOU DO OR YOU
