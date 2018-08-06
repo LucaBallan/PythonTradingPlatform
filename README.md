@@ -23,7 +23,7 @@ Features
 - can list positions, accounts, orders
 - can place and cancel orders
 - allows for the creation of background jobs collecting information about equities and making investment decision (these are not tested features)
-- realtime data
+- realtime data visualization and processing
 
 ![Alt text](commands.png?raw=true "Command List")
 <img src="realtime_data.png" height="50%" width="50%">
