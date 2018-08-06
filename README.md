@@ -61,4 +61,4 @@ UNSUPPORTED FEATURES
 
 - multiple legs orders are not supported
 
-- everything that the E*Trade APIs does not support is not supported by this platform
+- any features not supported by the E*Trade APIs is not supported by this platform
