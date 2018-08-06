@@ -2,12 +2,12 @@
 
 BY USING THIS SOFTWARE YOU ARE ACCEPTING THE FACT THAT IT WILL HAVE ACCESS TO ALL
 YOUR E*TRADE ACCOUNT AND IT CAN AUTOMATICALLY PLACE ORDERS THAT YOU DO OR YOU
-DO NOT WANT.
+DO NOT WANT.<BR>
 
-THIS IS NOT A BUG FREE SOFTWARE AND MANY FUNCTIONALITIES HAVE NOT BEEN TESTED.
-USE THIS SOFTWARE AT YOUR OWN RISK.
+THIS IS NOT A BUG FREE SOFTWARE AND MANY FUNCTIONALITIES HAVE NOT BEEN TESTED.<BR>
+USE THIS SOFTWARE AT YOUR OWN RISK.<BR>
 
-
+<BR>
 
 GET STARTED
 ---
@@ -21,7 +21,7 @@ GET STARTED
    - use browser_path_Windows, browser_path_Linux, browser_path_Darwin accordingly to your operating system
    - this step is necessary for the E*Trade authorization procedure
 
-
+<BR>
 
 
 RUN
@@ -31,7 +31,7 @@ RUN
 
 - python run.py             -> start the platform in the production environment
 
-
+<BR>
 
 
 UNSUPPORTED FEATURES
