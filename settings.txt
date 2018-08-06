@@ -1,0 +1,8 @@
+{
+"browser_path_Windows": "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s",
+"browser_path_Darwin": "open -a /Applications/Google\\ Chrome.app %s",
+"browser_path_Linux": "",
+"quote_update_time_sec": 1.0,
+"job___update_time_sec": 1.0,
+"autocomplete": ["EKSO", "ROKU", "MOMO", "JD", "WDC", "FB", "AAPL", "NVDA", "WB", "TSLA", "AMZN", "AMD", "ORCL", "GOOGL", "ATVI", "MSFT", "GPRO", "NFLX", "IBM", "EBAY", "BABA", "DIS", "SINA", "TCEHY", "NTDOY", "SNAP", "INTC", "QCOM", "Z", "LITE", "CSCO", "VOO", "QQQ", "GSVC", "AIEQ", "GBTC", "DIA", "DDM", "UDOW", "DOD", "AKAO", "ESPR", "EXEL", "INCY", "IRWD", "ILMN", "JAZZ", "VRX", "RTTR", "KITE", "PBYI", "NVS", "AMGN", "GSK", "ALB", "LJPC", "AGN", "TEVA", "JNJ", "CELG", "MDT", "ADRO", "NLY", "JPM", "WFC", "GS", "MS", "SBUX", "TXRH", "HD", "NKE", "T", "UA", "GE", "BA", "SWK", "MO", "CAT", "HON", "MMM", "GE", "ABX", "USO", "SDRL", "CVX", "GOLD", "EUR", "GLCNF", "FCX", "CMCLF"]
+}

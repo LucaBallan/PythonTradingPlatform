@@ -1,0 +1,8 @@
+{
+"sandbox": {
+	"consumer_secret": "", 
+	"consumer_key": ""}, 
+"production": {
+	"consumer_secret": "", 
+	"consumer_key": ""}
+}
