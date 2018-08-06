@@ -26,7 +26,7 @@ Features
 - realtime data
 
 ![Alt text](commands.png?raw=true "Command List")
-![Alt text](realtime_data.png) <!-- .element height="50%" width="50%" -->
+<img src="realtime_data.png" height="50%" width="50%">
 
 
 GET STARTED
