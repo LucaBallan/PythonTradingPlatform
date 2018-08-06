@@ -12,8 +12,8 @@ USE THIS SOFTWARE AT YOUR OWN RISK.<BR>
 Features
 ---
 
-- can list positions, accounts, orders.
-- can place and cancel orders.
+- can list positions, accounts, orders
+- can place and cancel orders
 - allows for the creation of background jobs collecting information about equities and making investment decision (these are not tested features)
 
 ![Alt text](commands.png?raw=true "Title")
