@@ -10,51 +10,10 @@ from TradingPlatformShell import ShellServer
 
 
 #
-# parse command line
-#
-clear_jobs = False
-use_sandbox = False
-for arg in sys.argv[1:]:
-    if arg.lower() == 'clear':
-        clear_jobs = True
-        print('clear existing jobs')
-    if arg.lower() == 'sandbox':
-        use_sandbox = True
-        print('use sandbox')
-
-
-#
-# Load keys <- keys.txt
-#
-with open('keys.txt', 'r') as fp:
-    keys = json.load(fp)
-
-
-#
-# Load Preferences
-#
-with open('preferences.txt', 'r') as fp:
-    preferences = json.load(fp)
-
-
-#
-# Load Settings
-#
-with open('settings.txt', 'r') as fp:
-    settings = json.load(fp)
-browser_path = settings['browser_path_' + platform.system()]
-quote_update_time = settings['quote_update_time_sec']
-job___update_time = settings['job___update_time_sec']
-
-
-#
-#
-#
-#
 #
 #
 print('*')
-print('*   Trading Interface')
+print('*   Trading Platform')
 print('*   Copyright (c) 2018 Luca Ballan')
 print('*')
 print('THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR')
@@ -80,6 +39,53 @@ while True:
         exit(0)
 print('')
 
+
+#
+#
+# parse command line
+#
+clear_jobs = False
+use_sandbox = False
+for arg in sys.argv[1:]:
+    if arg.lower() == 'clear':
+        clear_jobs = True
+        print('clear existing jobs')
+    if arg.lower() == 'sandbox':
+        use_sandbox = True
+        print('use sandbox')
+
+
+#
+# Load keys <- keys.txt
+#
+with open('keys.txt', 'r') as fp:
+    keys = json.load(fp)
+    if (use_sandbox and keys['sandbox']['consumer_key'] == '') or (not use_sandbox and keys['production']['consumer_key'] == ''):
+        print('Consumer key and secret need to be set in keys.txt for the platform to connect to your account.')
+        print('See README.md for additional information.')
+        print('')
+        exit(0)
+
+#
+# Load Preferences
+#
+with open('preferences.txt', 'r') as fp:
+    preferences = json.load(fp)
+
+
+#
+# Load Settings
+#
+with open('settings.txt', 'r') as fp:
+    settings = json.load(fp)
+browser_path = settings['browser_path_' + platform.system()]
+quote_update_time = settings['quote_update_time_sec']
+job___update_time = settings['job___update_time_sec']
+
+
+#
+#
+#
 #
 # Start JobServer
 #

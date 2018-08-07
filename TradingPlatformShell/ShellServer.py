@@ -50,7 +50,7 @@ class ShellServer(threading.Thread):
                         }
 
         action_table = [['', [0, action_default]],
-                        ['exit', [0, action_quit, '', 'quit']],
+                        ['exit', [0, action_quit, '', 'exit platform']],
                         ['jobs', [0, action_jobs_list, '', 'list all the jobs']],
                         ['remove', [1, action_jobs_remove, 'job_id', 'remove a job from the job list']],
                         [],
