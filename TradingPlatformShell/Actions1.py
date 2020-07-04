@@ -1,3 +1,5 @@
+from functools import partial
+
 from TradeInterface import current_time
 from TradingPlatformShell.StringParsers import *
 from TradingPlatformShell.Utils import *
@@ -76,16 +78,17 @@ def action_quote(params, data):
     except ZeroDivisionError:
         pe = 0.0
     try:
-        stock_yield = float(quote['annualDividend']) * 100.0 / price
+        stock_yield = float(quote['dividend']) * 100.0 / price
     except ZeroDivisionError:
         stock_yield = 0.0
 
-    print(quote['symbolDesc'])
+    print(quote['symbolDescription'])
     print('price           = ' + str(round(price, 2)) + '    ( sell for ' + str(quote['bid']) + ' / buy for ' + str(quote['ask']) + ' )       (' + str(quote['bidSize']) + '/' + str(quote['askSize']) + ')')
-    print('yield           = %.1f%%' % stock_yield)
-    print('P/E             = %.1f' % pe)
     print('eps             = ' + str(quote['eps']))
     print('eps estimated   = ' + str(quote['estEarnings']))
+    print('high / low      = ' + str(quote['high']) + ' / ' + str(quote['low']))
+    print('yield           = %.1f%%' % stock_yield)
+    print('P/E             = %.1f' % pe)
     return False
 
 
@@ -94,28 +97,18 @@ def action_quote(params, data):
 #
 def action_order_list(_, data):
     trade = data['trade']
-    not_visualized = 0
-    marker = None
-
     table = []
-    while True:
-        try:
-            order_list, marker, not_parsed = trade.list_orders(count=25, marker=marker)
-        except ValueError as e:
-            print(str(e))
-            return False
-        not_visualized += not_parsed
+    try:
+        order_list = trade.list_orders()
+    except ValueError as e:
+        print(str(e))
+        return False
 
-        for o in order_list:
-            table.append(format_order(o))
+    for o in order_list:
+        table.append(format_order(o))
 
-        if marker is None:
-            break
-
+    table.sort(key=lambda x: x[0])
     print(tabulate(table, stralign='left', tablefmt='plain'))
-    if not_visualized != 0:
-        print('warning:  +' + str(not_visualized) + ' orders')
-
     return False
 
 
@@ -123,34 +116,112 @@ def action_order_list(_, data):
 #
 #
 def action_positions_list(_, data):
-    trade = data['trade']
+    try:
+        positions_ = data['trade'].list_positions()
+    except ValueError as e:
+        print(str(e))
+        return False
 
-    request_orders = 25
-    marker = 0
-    positions_ = []
-    while True:
-        try:
-            positions = trade.list_positions(count=request_orders, marker=marker)
-        except ValueError as e:
-            print(str(e))
-            return False
-
-        positions_ += positions
-        if len(positions) < request_orders:
-            break
-        time.sleep(0.5)
-        marker += request_orders
-
-    # trim decimals
-    positions = [(x[0], x[1], x[2], round(x[2] * x[1] / 1000.0), round(x[2] * x[1] - x[3]), round((x[2] * x[1] - x[3]) * 100.0 / x[3], 1)) for x in positions_]
+    positions = [(x[0],
+                  round(x[1], 0),
+                  round(x[2], 2),
+                  round(x[2] * x[1]),
+                  round(x[2] * x[1] - x[3]),
+                  round((x[2] * x[1] - x[3]) * 100.0 / x[3], 1)) for x in positions_]
     positions.sort(key=lambda x: -x[5])
 
     total_invested = sum([(x[2] * x[1]) for x in positions_])
     total_gain = sum([(x[2] * x[1] - x[3]) for x in positions_])
-    positions.append(('', None, None, round(total_invested / 1000.0), round(total_gain), None))
+    positions.append(('', None, None, round(total_invested), round(total_gain), None))
 
-    # print
-    print(tabulate(positions, headers=['symbol', 'qty', 'last price', 'amount (K)', 'gain', '      %'], stralign='left'))
+    print(tabulate(positions, headers=['symbol',
+                                       'qty',
+                                       'last price',
+                                       'amount',
+                                       'gain',
+                                       '      %'], stralign='left'))
+    return False
+
+
+#
+#
+#
+def action_positions_list_complete(_, data):
+    try:
+        positions_ = data['trade'].list_positions()
+    except ValueError as e:
+        print(str(e))
+        return False
+
+    positions_ = [list(x) for x in positions_]
+    symbols = [x[0] for x in positions_]
+
+    # Retrieve updated quote.
+    if market_session() == 'NO_TRADE':   # TODO does it need to be also in after Market?
+        try:
+            prices = data['trade'].get_current_price_multi(symbols)
+
+            for j in range(len(positions_)):
+                if prices[j] is None:
+                    print('Could not retrieve the up to date price for ' + symbols[j])
+                else:
+                    positions_[j][2] = prices[j]
+
+        except ValueError as e:
+            print(str(e))
+            print('Cannot provide the current value of the stocks.')
+            return False
+
+    #
+    # read sell_orders
+    #
+    sell_orders = [None] * len(positions_)
+    try:
+        data['trade'].parse_all_orders(partial(find_protections, symbols=symbols, output=sell_orders))
+    except ValueError as e:
+        print(str(e))
+        print('Cannot provide order information for the positions.')
+        return False
+
+    # Compute statistics.
+    total_invested = sum([(x[2] * x[1]) for x in positions_])
+    total_gain = sum([(x[2] * x[1] - x[3]) for x in positions_])
+
+    # Build table.
+    positions = []
+    for i, x in enumerate(positions_):
+        gain = x[2] * x[1] - x[3]
+        gain_percent = round(gain * 100.0 / x[3], 1)
+        amount = round(x[2] * x[1])
+        gain = round(gain)
+
+        stop_loss_str = None
+        sell_str = None
+        if sell_orders[i] is not None:
+            if 'STOP' in sell_orders[i]:
+                stop_loss_str = ('%.2f (%.1f%%)' % (sell_orders[i]['STOP']['price'], 100.0 * (sell_orders[i]['STOP']['price'] - x[2]) / x[2]))
+                if sell_orders[i]['STOP']['qty'] != x[1]:
+                    stop_loss_str += ' (partial)'
+            if 'LIMIT' in sell_orders[i]:
+                sell_str = ('%.2f (%.1f%%)' % (sell_orders[i]['LIMIT']['price'], 100.0 * (sell_orders[i]['LIMIT']['price'] - x[2]) / x[2]))
+                if sell_orders[i]['LIMIT']['qty'] != x[1]:
+                    sell_str += ' (partial)'
+
+        positions.append([x[0], amount, gain, gain_percent, ' (' + str(int(x[1])) + ') ', round(x[2], 2), stop_loss_str, sell_str])
+
+    # Sort by gain.
+    positions.sort(key=lambda x: -x[2])
+    positions.append(('', round(total_invested), round(total_gain), None, None, None, None, None))
+
+    # Print table.
+    print(tabulate(positions, headers=['symbol',
+                                       'amount',
+                                       'gain',
+                                       '    %',
+                                       'qty',
+                                       '  price',
+                                       '       stop loss',
+                                       '          sell'], stralign='right'))
     return False
 
 
@@ -219,7 +290,7 @@ def action_w_create(params, data):
         print(str(e))
         return False
 
-    data['figure_server'].add_figure(params[0])
+    data['figure_server'].add_figure(symbol)
     return False
 
 
@@ -305,7 +376,3 @@ def action_calc(params, data):
         print('error in evaluating the expression')
 
     return False
-
-#
-#
-#

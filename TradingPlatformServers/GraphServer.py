@@ -1,7 +1,9 @@
 import threading
 import warnings
-import matplotlib
 from sys import platform as sys_pf
+
+import matplotlib
+
 if sys_pf == 'darwin':
     print('[use TkAgg]')
     matplotlib.use("TkAgg")
@@ -122,6 +124,7 @@ class GraphServer:
                     fig.show()
                     self.__figure_list.append([symbol, fig, ax, line])
                 self.__to_add = []
+            #
             self.__mutex.release()
 
             #

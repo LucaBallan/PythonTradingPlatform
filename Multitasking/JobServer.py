@@ -1,12 +1,14 @@
-import threading
-import os.path
-import pickle
 import copy
 import importlib
+import os.path
+import pickle
+import threading
+
+import MultiTasking.Task
 
 
 #
-#
+# TODO rename task in job
 #
 class JobServer(threading.Thread):
     #
@@ -115,9 +117,9 @@ class JobServer(threading.Thread):
             done_list = []
             for a in self._task_list:
                 if not a.started:
-                    a.start(self, self.aux_data)                                 # Start
+                    a.start(self, self.aux_data)                                    # Start
                     a.started = True
-                done, new_tasks, msg = a.run(self, self.aux_data)                # Run
+                done, new_tasks, msg = a.run(self, self.aux_data)                   # Run
                 if done:
                     done_list.append(a.identifier)
                 for new_task in new_tasks:
@@ -132,7 +134,7 @@ class JobServer(threading.Thread):
                 tmp_list = []
                 for a in self._task_list:
                     if a.identifier in done_list:
-                        a.stop(self, self.aux_data)                              # Stop
+                        a.stop(self, self.aux_data)                                 # Stop
                     else:
                         tmp_list.append(a)
                 self._task_list = tmp_list
@@ -157,7 +159,7 @@ class JobServer(threading.Thread):
     #
     #
     #
-    def list_done_tasks(self, display_done_and_removed=True):
+    def list_done_tasks(self, display_done_and_removed: bool = True):
         msg1 = ''
         msg2 = ''
         msg3 = False
@@ -203,7 +205,7 @@ class JobServer(threading.Thread):
     #
     #
     #
-    def add(self, task):
+    def add(self, task: MultiTasking.Task):
         self._mutex.acquire()
         self._task_list.append(task)
         self._mutex.release()
@@ -211,7 +213,7 @@ class JobServer(threading.Thread):
     #
     #
     #
-    def remove(self, task_id):
+    def remove(self, task_id: int):
         self._mutex.acquire()
         if task_id in [a.identifier for a in self._task_list]:
             self.__remove_list.append(task_id)
@@ -249,7 +251,7 @@ class JobServer(threading.Thread):
     #
     #
     #
-    def load_or_create(self, status_file_path, clear_jobs):
+    def load_or_create(self, status_file_path: str, clear_jobs: bool):
         self.__status_file_path = status_file_path
         if (not clear_jobs) and os.path.isfile(status_file_path):
             o = pickle.load(open(status_file_path, 'rb'))

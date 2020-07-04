@@ -1,4 +1,5 @@
 import threading
+
 import InteractiveShell
 from TradingPlatformShell.Actions1 import *
 from TradingPlatformShell.Actions2 import *
@@ -8,28 +9,19 @@ from TradingPlatformShell.Actions2 import *
 #
 #
 class ShellServer(threading.Thread):
-    aux_data = None
-
-    #
-    #
-    #
-    def __init__(self, aux_data):
+    def __init__(self, aux_data: dict):
         super().__init__()
-        self.aux_data = aux_data
+        self.__aux_data = aux_data
 
-    #
-    #
-    #
     def run(self):
-        #
-        #
-        #
+        # Define aliases and commands.
         list_aliases = {'x': 'exit',
                         'j': 'jobs',
                         'r': 'remove',
                         #
                         'o': 'orders',
                         'p': 'positions',
+						'pp': 'positions+',
                         'q': 'quote',
                         't': 'time',
                         'bal': 'balance',
@@ -55,7 +47,8 @@ class ShellServer(threading.Thread):
                         ['remove', [1, action_jobs_remove, 'job_id', 'remove a job from the job list']],
                         [],
                         ['orders', [0, action_order_list, '', 'list active orders']],
-                        ['positions', [0, action_positions_list, '', 'list positions']],
+                        ['positions', [0, action_positions_list, '', 'list of the open positions']],
+                        ['positions+', [0, action_positions_list_complete, '', 'analysis of the open positions']],
                         ['time', [0, action_time, '', 'utc time']],
                         ['balance', [0, action_balance, '', 'get account balance']],
                         [],
@@ -76,22 +69,18 @@ class ShellServer(threading.Thread):
                         ['trail', [2, action_sell_trailing,     'symbol margin                  [order_no]', 'sell  if below stop % (realtime)', help_trail]],
                         ]
 
-        #
-        #
-        # console
-        #
-        console = InteractiveShell.Console(words_list=self.aux_data['settings']['autocomplete'], history_filename=None, ctrl_c_command='exit', auto_suggest=False)
-        self.aux_data['console'] = console
+        # Define console.
+        console = InteractiveShell.Console(words_list=self.__aux_data['settings']['autocomplete'], history_filename=None, ctrl_c_command='exit', auto_suggest=False)
+        self.__aux_data['console'] = console
 
-        #
-        # loop
-        #
+        # Loop console.
         try:
-            InteractiveShell.command_prompt(console, action_table, list_aliases=list_aliases, aux_data=self.aux_data)
+            InteractiveShell.command_prompt(console=console,
+                                            action_table_=action_table,
+                                            list_aliases=list_aliases,
+                                            aux_data=self.__aux_data)
         except Exception as e:
             print('shell: ' + str(e))
 
-        #
-        # Quit Main Thread
-        #
-        self.aux_data['main_thread_quit_event'].set()
+        # Signal main thread to quit.
+        self.__aux_data['main_thread_quit_event'].set()

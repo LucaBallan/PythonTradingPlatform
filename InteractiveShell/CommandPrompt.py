@@ -1,12 +1,16 @@
+from typing import Sequence, Dict
+
 from InteractiveShell import Console
 
 
 #
 #
 #
-def command_prompt(console: Console, action_table_: list, list_aliases: dict=None, aux_data=None) -> None:
+def command_prompt(console: Console,
+                   action_table_: Sequence[list],
+                   list_aliases: Dict[str, str] = None,
+                   aux_data: dict = None) -> None:
     """
-
     action_table_ = [ ['action_name', [min_num_parameters, fnc, param_desc, line_desc, [help_fnc]], ....
 
                     NB: 1) []        -> create empty space in the help
@@ -14,7 +18,6 @@ def command_prompt(console: Console, action_table_: list, list_aliases: dict=Non
                         3) 'action'  -> must be lower case
 
     list_aliases = { 'alias': 'action_name', ....
-
     """
     #
     # define structure

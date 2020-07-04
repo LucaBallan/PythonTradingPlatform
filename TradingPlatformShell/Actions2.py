@@ -1,4 +1,5 @@
 import math
+
 import Tasks
 from TradeInterface import format_order_action
 from TradingPlatformShell.StringParsers import *
@@ -116,7 +117,7 @@ def action_buy(params, data):
 
     else:
         #
-        # TODO not tested
+        # TODO Not fully tested.
         #
         job_server = data['job_server']
         new_id = job_server.next_valid_task_id()
@@ -179,7 +180,7 @@ def action_sell(params, data):
     #
     # quantity
     #
-    quantity = check_positions_quantity(symbol, data)
+    quantity = int(check_positions_quantity(symbol, data))
     if quantity <= 0:
         print('Cannot sell an equity that I do not own')
         return False
@@ -224,7 +225,7 @@ def action_sell(params, data):
 
     else:
         #
-        # TODO not tested
+        # TODO Not fully tested.
         #
         job_server = data['job_server']
         new_id = job_server.next_valid_task_id()
@@ -276,7 +277,7 @@ def action_sell_trailing(params, data):
     #
     # quantity
     #
-    quantity = check_positions_quantity(symbol, data)
+    quantity = int(check_positions_quantity(symbol, data))
     if quantity <= 0:
         print('Cannot sell an equity that I do not own')
         return False
@@ -295,7 +296,7 @@ def action_sell_trailing(params, data):
         prev_order_id = open_orders[0][0]
 
     #
-    # TODO not tested
+    # TODO Not fully tested.
     #
     job_server = data['job_server']
     new_id = job_server.next_valid_task_id()
@@ -348,7 +349,7 @@ def action_sell_stop(params, data):
     #
     # quantity
     #
-    quantity = check_positions_quantity(symbol, data)
+    quantity = int(check_positions_quantity(symbol, data))
     if quantity <= 0:
         print('Cannot sell an equity that I do not own')
         return False
@@ -356,7 +357,7 @@ def action_sell_stop(params, data):
     #
     # previous orders
     #
-    old_stopPrice = None
+    old_stop_price = None
     open_orders = trade.find_open_orders(symbol, 'SELL')
     if len(open_orders) > 1:
         print('Multiple sell orders have been placed on this security, please cancel them before continue.')
@@ -365,7 +366,7 @@ def action_sell_stop(params, data):
         # save old price
         if open_orders[0][1]['priceType'] == 'STOP':
             if int(open_orders[0][1]['orderedQuantity']) == quantity:
-                old_stopPrice = float(open_orders[0][1]['stopPrice'])
+                old_stop_price = float(open_orders[0][1]['stopPrice'])
         # check used prev_order_id
         if prev_order_id is not None:
             print('A sell order has already been placed [' + str(open_orders[0][0]) + '] on this security and it is not ' + str(prev_order_id))
@@ -390,9 +391,9 @@ def action_sell_stop(params, data):
     #
     # confirm
     #
-    if (old_stopPrice is not None) and (old_stopPrice > stop_price):
-        current_set_margin = round(((old_stopPrice / current_price) - 1.0) * 100.0, 2)
-        print('protection already set to  ' + str(current_set_margin) + '%    (' + str(old_stopPrice) + ').')
+    if (old_stop_price is not None) and (old_stop_price > stop_price):
+        current_set_margin = round(((old_stop_price / current_price) - 1.0) * 100.0, 2)
+        print('protection already set to  ' + str(current_set_margin) + '%    (' + str(old_stop_price) + ').')
         return False
     print(format_order_action('SELL_STOP', symbol, quantity, stop_price, session____, order_term, prev_order_id, immediate_order))
     yn = console.prompt_selection('confirm [y/n]? ', Console.str_from(['y', 'n']), default='n')
@@ -413,7 +414,7 @@ def action_sell_stop(params, data):
 
     else:
         #
-        # TODO not tested
+        # TODO Not fully tested.
         #
         job_server = data['job_server']
         new_id = job_server.next_valid_task_id()

@@ -1,8 +1,34 @@
-import time
-from typing import Optional, Union
+from typing import Optional, Union, List
+
 from tabulate import tabulate
+
 from InteractiveShell import Console
-from TradeInterface import format_order, market_session
+from TradeInterface import market_session
+
+
+#
+#
+#
+def format_order(o):
+    element = [''] * 8
+    element[0] = o['orderId']
+    element[1] = o['orderAction']
+    element[2] = o['symbol']
+    element[3] = o['orderStatus']
+    if o['orderStatus'] == 'EXECUTED':
+        element[4] = '@'
+        element[5] = str(o['executedPrice']) + '$'
+        element[6] = '(' + str(o['filledQuantity']) + ')'
+    if o['orderStatus'] == 'OPEN':
+        element[4] = o['priceType']
+        if o['priceType'] == 'LIMIT':
+            element[5] = str(o['limitPrice']) + '$'
+        if o['priceType'] == 'STOP':
+            element[5] = str(o['stopPrice']) + '$'
+        if o['priceType'] == 'STOP_LIMIT':
+            element[5] = 'limit = ' + str(o['limitPrice']) + '$ ' + ' stop = ' + str(o['stopPrice']) + '$'
+        element[6] = '(' + str(o['orderedQuantity']) + ')'
+    return element
 
 
 #
@@ -37,23 +63,16 @@ def check_positions_quantity(symbol: str, data) -> int:
     trade = data['trade']
     symbol = symbol.strip().upper()
 
-    request_orders = 25
-    marker = 0
-    while True:
-        try:
-            positions = trade.list_positions(count=request_orders, marker=marker)
-        except ValueError as e:
-            print(str(e))
-            return False
+    try:
+        positions = trade.list_positions()
+    except ValueError as e:
+        print(str(e))
+        return False
 
-        quantity = 0
-        for p in positions:
-            if symbol == p[0]:
-                quantity += p[1]
-        if len(positions) < request_orders:
-            break
-        time.sleep(0.5)
-        marker += request_orders
+    quantity = 0
+    for p in positions:
+        if symbol == p[0]:
+            quantity += p[1]
 
     return quantity
 
@@ -90,3 +109,36 @@ def decide_market_limit_price(session, limit_price, price):
         immediate_order = False
 
     return limit_price, immediate_order
+
+
+#
+# list_order functions
+#
+def find_protections(order_data: dict, symbols: List[str], output: List[dict]) -> None:
+    if order_data['orderStatus'] != 'OPEN':
+        return
+    if order_data['orderAction'] != 'SELL':
+        return
+    if (order_data['priceType'] != 'LIMIT') and (order_data['priceType'] != 'STOP') and (order_data['priceType'] != 'STOP_LIMIT'):
+        return
+
+    # find index
+    index = None
+    for i in range(len(symbols)):
+        if symbols[i] == order_data['symbol']:
+            index = i
+            break
+    if index is None:
+        return
+
+    # process
+    if output[index] is None:
+        output[index] = dict()
+
+    if order_data['priceType'] == 'LIMIT':
+        output[index]['LIMIT'] = {'price': float(order_data['limitPrice']), 'qty': int(float(order_data['orderedQuantity']))}
+
+    if (order_data['priceType'] == 'STOP') or (order_data['priceType'] == 'STOP_LIMIT'):
+        output[index]['STOP'] = {'price': float(order_data['stopPrice']), 'qty': int(float(order_data['orderedQuantity']))}
+
+    return

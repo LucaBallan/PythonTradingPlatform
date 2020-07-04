@@ -1,7 +1,9 @@
-import numpy
 import datetime
 from typing import Optional
-from Tasks.TimerTask import TimerTask
+
+import numpy
+
+from MultiTasking.TimerTask import TimerTask
 from TradeInterface import next_session, market_session
 
 

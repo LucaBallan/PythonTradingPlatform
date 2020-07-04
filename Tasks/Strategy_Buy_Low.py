@@ -1,5 +1,6 @@
 import datetime
 from typing import Optional
+
 from Tasks.FollowSymbolTask import FollowSymbolTask
 from TradeInterface import datetime_delay
 

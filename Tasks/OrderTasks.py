@@ -1,5 +1,6 @@
 import datetime
 from typing import Optional
+
 from Tasks.Attempt import Attempt
 from TradeInterface import datetime_delay, next_session, market_session
 

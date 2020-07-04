@@ -1,7 +1,9 @@
-import numpy
 import datetime
 import threading
 from collections import deque
+
+import numpy
+
 from TradeInterface import current_time
 
 
@@ -54,7 +56,8 @@ class QuoteServer(threading.Thread):
                 second_left = 0.0
                 next_time = current_time()
             else:
-                next_time = next_time + datetime.timedelta(milliseconds=self.time_frequency_sec * 1000.0)
+                next_time = next_time + datetime.timedelta(
+                    milliseconds=self.time_frequency_sec * 1000.0)  # TODO use market time
             if self.__exiting.wait(second_left):
                 break
 
@@ -65,13 +68,19 @@ class QuoteServer(threading.Thread):
             symbols = [symbol for symbol in self.__quote_db]
             if len(symbols) != 0:
                 try:
-                    quote = self.__trade.get_quote(symbols, intraday=True)
+                    # ask for prices
+                    prices = self.__trade.get_current_price_multi(symbols)
+
+                    # fill db
                     ask_time = current_time()
-                    for q in quote:
-                        if q[0] in self.__quote_db:
-                            self.__quote_db[q[0]][1].append([(float(q[1]['bid']) + float(q[1]['ask'])) / 2.0,  ask_time])
+                    for j in range(len(symbols)):
+                        if prices[j] is not None:
+                            self.__quote_db[symbols[j]][1].append([prices[j],
+                                                                   ask_time])    # TODO Not fully tested.
+
                 except Exception as e:
                     print('QuoteServer: ' + str(e))  # TODO HANDLE CONNECTION LOST!!! WITH QUIT!!! or retry
+
             #
             # End
             #

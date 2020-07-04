@@ -119,7 +119,7 @@ def string_to_price_or_quote_price(s, trade):
         pass
     try:
         return float(eval(s)), False
-    except Exception:
+    except Exception as _:
         pass
     if s[-1] == '%':
         return None, False
@@ -127,6 +127,6 @@ def string_to_price_or_quote_price(s, trade):
         value = trade.get_current_price(s)
         return value, True
     except ValueError as e:
-        print(str(e))
+        print('quote request for ' + s.upper() + ': ' + str(e))
         pass
     return None, False
