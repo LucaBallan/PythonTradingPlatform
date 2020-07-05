@@ -9,13 +9,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 BY USING THIS SOFTWARE YOU ARE ACCEPTING THE FACT THAT IT WILL HAVE ACCESS TO ALL
-YOUR E*TRADE ACCOUNT DATA AND THAT IT CAN AUTOMATICALLY PLACE ORDERS THAT YOU DO OR YOU
+YOUR ETRADE ACCOUNT DATA AND THAT IT CAN AUTOMATICALLY PLACE ORDERS THAT YOU DO OR YOU
 DO NOT WANT.<BR>
 
 THIS IS NOT A BUG FREE SOFTWARE AND MANY FUNCTIONALITIES HAVE NOT BEEN TESTED.<BR>
 USE THIS SOFTWARE AT YOUR OWN RISK.<BR>
 
 <BR>
+
+
+Updates
+---
+
+- 3 July: Added support for the new etrade APIs.
+
+<BR>
+
 
 Features
 ---
@@ -28,24 +37,19 @@ Features
 ![Alt text](commands.png?raw=true "Command List")
 <img src="realtime_data.png" height="50%" width="50%">
 
+<BR>
 
-GET STARTED
+
+Get Started
 ---
 
-- obtain E*Trade sandbox and production keys following the instruction in
-  https://developer.etrade.com/ctnt/dev-portal/getArticleByCategory?category=Documentation
+- obtain ETrade sandbox and production keys following the instruction in https://developer.etrade.com/home  
 
 - updates keys.txt with the keys
 
 - update the browser_path in settings.txt
    - use browser_path_Windows, browser_path_Linux, browser_path_Darwin accordingly to your operating system
-   - this step is necessary for the E*Trade authorization procedure
-
-<BR>
-
-
-RUN
----
+   - this step is necessary for the ETrade authorization procedure
 
 - python run.py sandbox     -> start the platform in the sandbox environment
 
@@ -54,11 +58,11 @@ RUN
 <BR>
 
 
-UNSUPPORTED FEATURES
+Unsupported Features
 ---
 
 - margin accounts are not supported
 
 - multiple legs orders are not supported
 
-- any features not supported by the E*Trade APIs is not supported by this platform
+- any features not supported by the ETrade APIs is not supported by this platform
