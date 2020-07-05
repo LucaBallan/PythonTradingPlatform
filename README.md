@@ -1,4 +1,4 @@
-# Command Line Interface for ETrade accounts in python
+# Command line interface for ETrade accounts in python
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -21,7 +21,7 @@ USE THIS SOFTWARE AT YOUR OWN RISK.<BR>
 Updates
 ---
 
-- 3 July: Added support for the new etrade APIs.
+- 3 July: Added support for the new ETrade APIs.
 
 <BR>
 
@@ -31,7 +31,7 @@ Features
 
 - can list positions, accounts, orders
 - can place and cancel orders
-- allows for the creation of background jobs collecting information about equities and making investment decision (these are not tested features)
+- allows for the creation of background jobs collecting information about equities and making investment decision (some of these features are not tested)
 - realtime data visualization and processing
 
 ![Alt text](commands.png?raw=true "Command List")
@@ -45,15 +45,16 @@ Get Started
 
 - obtain ETrade sandbox and production keys following the instruction in https://developer.etrade.com/home  
 
-- updates keys.txt with the keys
+- updates keys.txt with your personal keys
 
 - update the browser_path in settings.txt
-   - use browser_path_Windows, browser_path_Linux, browser_path_Darwin accordingly to your operating system
-   - this step is necessary for the ETrade authorization procedure
+   - update browser_path_Windows, browser_path_Linux, or browser_path_Darwin
+   - this step is necessary to perform the ETrade authorization procedure
 
-- python run.py sandbox     -> start the platform in the sandbox environment
-
-- python run.py             -> start the platform in the production environment
+- Run either:
+   - python run.py sandbox     (to start the platform in sandbox environment)
+   or
+   - python run.py             (to start the platform in production environment)
 
 <BR>
 
