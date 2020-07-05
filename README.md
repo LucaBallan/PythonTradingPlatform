@@ -21,7 +21,7 @@ USE THIS SOFTWARE AT YOUR OWN RISK.<BR>
 Updates
 ---
 
-- 3 July: Added support for the new ETrade APIs.
+- 3 July 2020: Added support for the new ETrade APIs.
 
 <BR>
 
