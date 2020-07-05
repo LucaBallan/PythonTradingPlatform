@@ -4,7 +4,7 @@ from collections import deque
 
 import numpy
 
-from TradeInterface import current_time
+from trade_interface import current_time
 
 
 #

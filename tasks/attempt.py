@@ -1,7 +1,7 @@
 import datetime
 from typing import Optional
 
-from MultiTasking.TimerTask import TimerTask
+from multi_tasking import TimerTask
 
 
 #

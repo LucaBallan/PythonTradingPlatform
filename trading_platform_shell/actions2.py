@@ -1,9 +1,9 @@
 import math
 
-import Tasks
-from TradeInterface import format_order_action
-from TradingPlatformShell.StringParsers import *
-from TradingPlatformShell.Utils import *
+import tasks
+from trade_interface import format_order_action
+from trading_platform_shell.string_parsers import *
+from trading_platform_shell.utils import *
 
 
 #
@@ -121,7 +121,7 @@ def action_buy(params, data):
         #
         job_server = data['job_server']
         new_id = job_server.next_valid_task_id()
-        new_task = Tasks.OrderWhenOpen(new_id, None)
+        new_task = tasks.OrderWhenOpen(new_id, None)
 
         new_task.order_data['action'] = 'BUY'
         new_task.order_data['symbol'] = symbol
@@ -229,7 +229,7 @@ def action_sell(params, data):
         #
         job_server = data['job_server']
         new_id = job_server.next_valid_task_id()
-        new_task = Tasks.OrderWhenOpen(new_id, None)
+        new_task = tasks.OrderWhenOpen(new_id, None)
 
         new_task.order_data['action'] = 'SELL'
         new_task.order_data['symbol'] = symbol
@@ -300,7 +300,7 @@ def action_sell_trailing(params, data):
     #
     job_server = data['job_server']
     new_id = job_server.next_valid_task_id()
-    new_task = Tasks.SellTrailing(new_id, None)
+    new_task = tasks.SellTrailing(new_id, None)
 
     new_task.set_order_data(symbol=symbol, qty=quantity, margin=margin, prev_order_id=prev_order_id, order_term=order_term, update_freq=10)
 
@@ -418,7 +418,7 @@ def action_sell_stop(params, data):
         #
         job_server = data['job_server']
         new_id = job_server.next_valid_task_id()
-        new_task = Tasks.OrderWhenOpen(new_id, None)
+        new_task = tasks.OrderWhenOpen(new_id, None)
 
         new_task.order_data['action'] = 'SELL_STOP'
         new_task.order_data['symbol'] = symbol

@@ -4,8 +4,6 @@ import os.path
 import pickle
 import threading
 
-import MultiTasking.Task
-
 
 #
 # TODO rename task in job
@@ -128,7 +126,7 @@ class JobServer(threading.Thread):
                     self._msg_feedback.append(msg)
 
             #
-            # Remove done Tasks
+            # Remove done tasks.
             #
             if len(done_list) != 0:
                 tmp_list = []
@@ -141,7 +139,7 @@ class JobServer(threading.Thread):
                 self._done_list_feedback += done_list
 
             #
-            # Add new Tasks
+            # Add new tasks.
             #
             self._task_list += to_add_list
 
@@ -205,7 +203,7 @@ class JobServer(threading.Thread):
     #
     #
     #
-    def add(self, task: MultiTasking.Task):
+    def add(self, task):
         self._mutex.acquire()
         self._task_list.append(task)
         self._mutex.release()
@@ -258,7 +256,7 @@ class JobServer(threading.Thread):
             self.__next_valid_id = o[0]
             self.__remove_list = copy.deepcopy(o[1])
             for task_desc in o[2:]:
-                class_module = importlib.import_module("Tasks")
+                class_module = importlib.import_module('tasks')       # TODO to test
                 class_type = getattr(class_module, task_desc[0])
                 task = class_type(None, task_desc[1])
                 self.add(task)

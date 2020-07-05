@@ -1,9 +1,9 @@
 import datetime
 from typing import Optional, Any
 
-import MultiTasking.JobServer
-from MultiTasking.Task import Task
-from TradeInterface import current_time
+from multi_tasking.job_server import JobServer
+from multi_tasking.task import Task
+from trade_interface import current_time
 
 
 #
@@ -24,7 +24,7 @@ class TimerTask(Task):
     #
     #
     #
-    def run(self, parent: MultiTasking.JobServer, data: Any) -> (bool, tuple, Optional[str]):
+    def run(self, parent: JobServer, data: Any) -> (bool, tuple, Optional[str]):
         # check time
         eastern_time_now = current_time()
         if eastern_time_now >= self.__utc_time:
@@ -59,7 +59,7 @@ class TimerTask(Task):
     #
     #
     #
-    def start(self, parent: MultiTasking.JobServer, data: Any) -> None:
+    def start(self, parent: JobServer, data: Any) -> None:
         """Initializes the job.
 
         This function is called just before its first run, or when it restarted
@@ -74,7 +74,7 @@ class TimerTask(Task):
     #
     #
     #
-    def f(self, parent: MultiTasking.JobServer, data: Any) -> (bool, tuple, Optional[str],
+    def f(self, parent: JobServer, data: Any) -> (bool, tuple, Optional[str],
                                                                Optional[datetime.datetime]):
         """Executes the job task at specific time.
 
@@ -92,7 +92,7 @@ class TimerTask(Task):
         """
         raise NotImplementedError
 
-    def stop(self, parent: MultiTasking.JobServer, data: Any) -> None:
+    def stop(self, parent: JobServer, data: Any) -> None:
         """Stops the job.
 
         Called when the job is done.

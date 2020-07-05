@@ -1,6 +1,6 @@
 from typing import Sequence, Dict
 
-from InteractiveShell import Console
+from interactive_shell.console import Console
 
 
 #

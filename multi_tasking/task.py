@@ -1,6 +1,6 @@
 from typing import Optional, Any
 
-import MultiTasking.JobServer
+from multi_tasking.job_server import JobServer
 
 
 #
@@ -39,7 +39,7 @@ class Task:
     #
     #
     #
-    def start(self, parent: 'MultiTasking.JobServer', data: Any) -> None:
+    def start(self, parent: JobServer, data: Any) -> None:
         """Initializes the job.
 
         This function is called just before its first run, or when it restarted
@@ -54,7 +54,7 @@ class Task:
     #
     #
     #
-    def run(self, parent: 'MultiTasking.JobServer', data: Any) -> (bool, tuple, Optional[str]):
+    def run(self, parent: JobServer, data: Any) -> (bool, tuple, Optional[str]):
         """Executes the job.
 
         Args:
@@ -72,7 +72,7 @@ class Task:
     #
     #
     #
-    def stop(self, parent: 'MultiTasking.JobServer', data: Any) -> None:
+    def stop(self, parent: JobServer, data: Any) -> None:
         """Stops the job.
 
         Called when the job is done.

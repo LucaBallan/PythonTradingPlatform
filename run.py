@@ -4,11 +4,11 @@ import platform
 import sys
 import threading
 
-from MultiTasking import JobServer, SubProcessManager
-from Tasks import KeepConnectionAlive
-from TradeInterface import TradeInterface
-from TradingPlatformServers import QuoteServer, GraphServer
-from TradingPlatformShell import ShellServer
+from multi_tasking import JobServer, SubProcessManager
+from tasks import KeepConnectionAlive
+from trade_interface import TradeInterface
+from trading_platform_servers import QuoteServer, GraphServer
+from trading_platform_shell import ShellServer
 
 #
 #

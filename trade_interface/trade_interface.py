@@ -7,9 +7,9 @@ from typing import Tuple, List, Optional, Callable, Any, Sequence
 
 from tabulate import tabulate
 
-from TradeInterface.EtradeApi import EtradeApi, EtradeAuthorization
-from TradeInterface.MarketSession import market_session
-from TradeInterface.Utils import format_order_action
+from trade_interface.e_trade_api import EtradeApi, EtradeAuthorization
+from trade_interface.market_session import market_session
+from trade_interface.utils import format_order_action
 
 
 #

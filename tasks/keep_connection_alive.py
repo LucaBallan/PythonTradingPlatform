@@ -1,9 +1,9 @@
 import datetime
 from typing import Optional, Any
 
-from MultiTasking.JobServer import JobServer
-from MultiTasking.TimerTask import TimerTask
-from TradeInterface import datetime_delay
+from multi_tasking import JobServer
+from multi_tasking import TimerTask
+from trade_interface import datetime_delay
 
 
 #

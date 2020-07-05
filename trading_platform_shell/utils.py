@@ -2,8 +2,8 @@ from typing import Optional, Union, List
 
 from tabulate import tabulate
 
-from InteractiveShell import Console
-from TradeInterface import market_session
+from interactive_shell import Console
+from trade_interface import market_session
 
 
 #

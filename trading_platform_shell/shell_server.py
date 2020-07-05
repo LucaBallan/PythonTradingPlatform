@@ -1,8 +1,8 @@
 import threading
 
-import InteractiveShell
-from TradingPlatformShell.Actions1 import *
-from TradingPlatformShell.Actions2 import *
+import interactive_shell
+from trading_platform_shell.actions1 import *
+from trading_platform_shell.actions2 import *
 
 
 #
@@ -21,7 +21,7 @@ class ShellServer(threading.Thread):
                         #
                         'o': 'orders',
                         'p': 'positions',
-						'pp': 'positions+',
+                        'pp': 'positions+',
                         'q': 'quote',
                         't': 'time',
                         'bal': 'balance',
@@ -70,15 +70,15 @@ class ShellServer(threading.Thread):
                         ]
 
         # Define console.
-        console = InteractiveShell.Console(words_list=self.__aux_data['settings']['autocomplete'], history_filename=None, ctrl_c_command='exit', auto_suggest=False)
+        console = interactive_shell.Console(words_list=self.__aux_data['settings']['autocomplete'], history_filename=None, ctrl_c_command='exit', auto_suggest=False)
         self.__aux_data['console'] = console
 
         # Loop console.
         try:
-            InteractiveShell.command_prompt(console=console,
-                                            action_table_=action_table,
-                                            list_aliases=list_aliases,
-                                            aux_data=self.__aux_data)
+            interactive_shell.command_prompt(console=console,
+                                             action_table_=action_table,
+                                             list_aliases=list_aliases,
+                                             aux_data=self.__aux_data)
         except Exception as e:
             print('shell: ' + str(e))
 

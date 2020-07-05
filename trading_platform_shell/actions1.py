@@ -1,8 +1,8 @@
 from functools import partial
 
-from TradeInterface import current_time
-from TradingPlatformShell.StringParsers import *
-from TradingPlatformShell.Utils import *
+from trade_interface import current_time
+from trading_platform_shell.string_parsers import *
+from trading_platform_shell.utils import *
 
 
 #
